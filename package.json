@@ -21,7 +21,7 @@
     "linkcheck": "node scripts/link-check.js",
     "serve:site": "node scripts/serve-site.js",
     "check:html-size": "node scripts/check-html-size.js",
-    "check:lighthouse": "lhci autorun --config lighthouserc.cjs",
+    "check:lighthouse": "lhci collect --config lighthouserc.cjs && lhci assert --config lighthouserc.cjs",
     "check": "npm run generate && npm run validate && npm run clean && npm run build && npm run verify:jsonld && npm run linkcheck && npm run check:html-size",
     "verify:jsonld": "node scripts/verify-jsonld.js"
   },
