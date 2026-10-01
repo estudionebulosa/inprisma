@@ -398,8 +398,8 @@
       "auto": false,
       "variationAllowed": true,
       "platforms": ["medium", "linkedin", "substack"],
-      "validation": { "minLength": 50, "maxLength": 160 },
-      "description": "Meta description / social summary. Answer-first sentence preferred (AEO)."
+      "validation": { "minLength": 120, "maxLength": 160 },
+      "description": "Meta description / social summary (120-160 chars, PRD gate). Answer-first sentence preferred (AEO)."
     },
     {
       "key": "article.keywords",
