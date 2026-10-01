@@ -1,6 +1,6 @@
-# Template Placeholder System — Project Plan & Roadmap
+# inprisma — Project Plan & Roadmap
 
-> Consolidated plan derived from `readme.md` (content/distribution layer) and
+> Consolidated plan derived from the project brief (`docs/00-brief.md`) and
 > `prd_news_site_optimization.html` (technical optimization layer).
 > Status: Approved for build · Owner: Site Administrator · Last updated: 2026-10-01
 
