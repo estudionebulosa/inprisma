@@ -1,0 +1,43 @@
+{
+  "site": {
+    "name": "Template Placeholder System",
+    "title": "Templates optimizados para SEO, AEO y distribución multiplataforma",
+    "website": "https://example.com",
+    "locale": "es-ES",
+    "logo": "/assets/logo.png",
+    "social": {
+      "x": "https://x.com/example",
+      "linkedin": "https://www.linkedin.com/company/example",
+      "github": "https://github.com/example",
+      "youtube": "https://www.youtube.com/@example"
+    }
+  },
+  "author": {
+    "id": "admin",
+    "name": "Nombre Apellido",
+    "title": "Editor y responsable de contenidos",
+    "bio": "Breve biografía del administrador del sitio: qué cubre, con qué experiencia y por qué sus análisis son fiables.",
+    "credentials": [
+      "10 años cubriendo tecnología y producto",
+      "Especialista en SEO técnico y optimización para motores de respuesta"
+    ],
+    "email": "editor@example.com",
+    "website": "https://example.com/sobre",
+    "avatar": "/assets/avatar.jpg",
+    "sameAs": [
+      "https://x.com/example",
+      "https://www.linkedin.com/in/example",
+      "https://github.com/example"
+    ]
+  },
+  "org": {
+    "name": "Example Media",
+    "legalName": "Example Media S.L.",
+    "url": "https://example.com",
+    "logo": "/assets/logo.png",
+    "sameAs": [
+      "https://www.linkedin.com/company/example",
+      "https://github.com/example"
+    ]
+  }
+}

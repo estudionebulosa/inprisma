@@ -64,7 +64,7 @@ editing produce the *same artifact* rather than diverging.
 _data/placeholders.json            # schema: key, scope, type, required, validation, auto, variationAllowed, platforms
 _data/admin.json                   # site / author / org  (namespaced)
 content/articles/<slug>.md         # body + front matter (per-article data)
-content/articles/articles.11tydata.json   # defaults + eleventyComputed (slug, canonical, readingTime, revision, JSON-LD)
+content/articles/articles.11tydata.js     # defaults + eleventyComputed (slug, canonical, readingTime, revision, JSON-LD)
 _includes/layouts/{medium,linkedin,substack}.njk
 _includes/partials/{meta,jsonld,social}.njk
 config/cms.config.yml              # GENERATED from placeholders.json
@@ -150,8 +150,8 @@ Every entry in `_data/placeholders.json`:
 **Tasks**
 - [ ] `_data/placeholders.json` — complete field schema.
 - [ ] `_data/admin.json` — namespaced `site` / `author` / `org`.
-- [ ] `content/articles/_example.md` — reference article with full front matter.
-- [ ] `articles.11tydata.json` — defaults + `eleventyComputed` (slug, canonical, readingTime, revision, JSON-LD assembly).
+- [ ] `content/articles/example-article.md` — reference article with full front matter.
+- [ ] `articles.11tydata.js` — defaults + `eleventyComputed` (slug, canonical, readingTime, revision, JSON-LD assembly).
 - [ ] Layouts: `medium.njk`, `linkedin.njk`, `substack.njk`.
 - [ ] Partials: `meta.njk`, `jsonld.njk`, `social.njk`.
 - [ ] Generators: `scripts/generate-schema.js`, `scripts/generate-cms-config.js`.
