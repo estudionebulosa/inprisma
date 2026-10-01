@@ -1,0 +1,24 @@
+{% set origin = site.website | replace(r/\/+$/, "") %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "{{ origin }}/#organization",
+      "name": {{ org.name | dump | safe }},
+      "url": {{ (org.url or origin) | dump | safe }},
+      "logo": {{ (org.logo | absoluteUrl(site.website)) | dump | safe }},
+      "sameAs": {{ org.sameAs | dump | safe }}
+    },
+    {
+      "@type": "WebSite",
+      "@id": "{{ origin }}/#website",
+      "url": "{{ origin }}/",
+      "name": {{ site.name | dump | safe }},
+      "inLanguage": {{ site.locale | dump | safe }},
+      "publisher": { "@id": "{{ origin }}/#organization" }
+    }
+  ]
+}
+</script>

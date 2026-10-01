@@ -18,6 +18,7 @@ Create `content/articles/<anything>.md` with YAML front matter under an
 ```markdown
 ---
 article:
+  slug: mi-articulo
   title: "Un título de entre 15 y 60 caracteres"
   category: guias
   tags: [seo, aeo, eleventy]
@@ -36,6 +37,10 @@ article:
 Cuerpo del artículo en Markdown…
 ```
 
+Set `slug` explicitly: the URL is derived from it, so internal links stay stable
+even if you later rewrite the title. Without it, the slug falls back to a
+slugified title and every link to that page can break on an edit.
+
 Everything else — slug, canonical URL, ISO dates, reading time, word count,
 JSON-LD — is computed in `content/articles/articles.11tydata.js`. **Never write a
 `computed.*` field by hand.**
@@ -44,6 +49,7 @@ JSON-LD — is computed in `content/articles/articles.11tydata.js`. **Never writ
 
 | Field | Rule |
 |---|---|
+| `article.slug` | optional; lowercase, digits and hyphens. Set it to keep URLs stable |
 | `article.title` | 15–60 characters |
 | `article.excerpt` | 120–160 characters (PRD gate 2) |
 | `article.category` | lowercase, digits and hyphens only (`^[a-z0-9-]+$`) |
