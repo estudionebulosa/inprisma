@@ -38,7 +38,7 @@ Everything else is derived.
 ## 🚀 Quick start
 
 ```bash
-git clone <repo-url> && cd inprisma
+git clone https://github.com/estudionebulosa/inprisma && cd inprisma
 npm install
 npm run build      # → _site/ : the canonical page + 3 syndication variants
 ```

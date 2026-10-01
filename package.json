@@ -4,6 +4,14 @@
   "private": true,
   "type": "module",
   "description": "Template placeholder system: one validated content source rendered for web, Medium, LinkedIn and Substack.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/estudionebulosa/inprisma.git"
+  },
+  "homepage": "https://github.com/estudionebulosa/inprisma#readme",
+  "bugs": {
+    "url": "https://github.com/estudionebulosa/inprisma/issues"
+  },
   "scripts": {
     "build": "eleventy",
     "serve": "eleventy --serve",

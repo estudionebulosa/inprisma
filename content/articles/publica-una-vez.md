@@ -101,7 +101,7 @@ Añadir una plataforma nueva deja de ser un proyecto y pasa a ser **una plantill
 ## Empezar en tres pasos
 
 ```bash
-git clone <repo-url> && cd inprisma
+git clone https://github.com/estudionebulosa/inprisma && cd inprisma
 npm install
 npm run build        # → _site/ con la página canónica y las tres variantes
 ```
