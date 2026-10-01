@@ -1,5 +1,6 @@
 ---
 article:
+  slug: como-estructurar-un-articulo
   title: "Cómo estructurar un artículo para SEO, AEO y redes"
   dek: "Un método en cinco capas que sirve a buscadores, motores de respuesta y plataformas sociales a la vez."
   category: guias

@@ -289,6 +289,18 @@
     },
 
     {
+      "key": "article.slug",
+      "scope": "article",
+      "class": "repetitive-article",
+      "type": "string",
+      "required": false,
+      "auto": false,
+      "variationAllowed": false,
+      "platforms": ["medium", "linkedin", "substack"],
+      "validation": { "pattern": "^[a-z0-9-]+$", "maxLength": 60 },
+      "description": "Stable URL slug. Defaults to a slugified title; set it to keep URLs predictable so internal links never break when the title changes."
+    },
+    {
       "key": "article.title",
       "scope": "article",
       "class": "repetitive-article",

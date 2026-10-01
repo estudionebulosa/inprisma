@@ -1,5 +1,6 @@
 ---
 article:
+  slug: publica-una-vez
   title: "Publica una vez, rinde en todas partes"
   dek: "Un contrato de contenido, cuatro destinos y cero metadatos escritos a mano."
   category: guias

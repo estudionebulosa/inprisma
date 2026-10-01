@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="{{ site.locale }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ site.name }} · {{ site.title }}</title>
+  <meta name="description" content="{{ site.title }}">
+  <link rel="canonical" href="{{ site.website }}/">
+  <meta name="robots" content="index, follow">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="{{ site.name }}">
+  <meta property="og:title" content="{{ site.name }}">
+  <meta property="og:description" content="{{ site.title }}">
+  <meta property="og:url" content="{{ site.website }}/">
+  <meta property="og:image" content="{{ site.logo | absoluteUrl(site.website) }}">
+  {% include "partials/jsonld-site.njk" %}
+</head>
+<body>
+  <header class="site-header">
+    <a class="site-header__brand" href="{{ site.website }}">{{ site.name }}</a>
+  </header>
+
+  <main id="content">
+    <h1 class="home__title">{{ site.name }}</h1>
+    <p class="home__tagline">{{ site.title }}</p>
+
+    <section aria-labelledby="articles-heading">
+      <h2 id="articles-heading">Artículos</h2>
+      <ul class="home__articles">
+        {% for post in collections.articles %}
+        {% if post.data.platform === "web" %}
+        <li>
+          <a href="{{ post.url | absoluteUrl(site.website) }}">{{ post.data.article.title }}</a>
+          {% if post.data.article.dek %}<span class="home__dek">— {{ post.data.article.dek }}</span>{% endif %}
+        </li>
+        {% endif %}
+        {% endfor %}
+      </ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; {{ site.name }} · {{ org.name }}</p>
+  </footer>
+</body>
+</html>

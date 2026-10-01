@@ -23,14 +23,27 @@ if (!existsSync(SITE_DIR)) {
   process.exit(1);
 }
 
-// Required nodes and the properties we insist on for each.
-const REQUIRED = {
+// Required nodes and the properties we insist on for each. Article pages get
+// the full graph; the home page only carries site-level nodes.
+const ARTICLE_NODES = {
   Organization: ["name", "url"],
   WebSite: ["url", "name"],
   Person: ["name"],
   NewsArticle: ["headline", "datePublished", "dateModified", "author", "publisher"],
   BreadcrumbList: ["itemListElement"],
 };
+
+const SITE_NODES = {
+  Organization: ["name", "url"],
+  WebSite: ["url", "name"],
+};
+
+// The home page lives at the site root; everything else is an article page.
+function requiredFor(rel) {
+  return rel.endsWith("index.html") && !rel.includes("/guias/") && !rel.includes("/syndication/")
+    ? SITE_NODES
+    : ARTICLE_NODES;
+}
 
 function walk(dir) {
   const out = [];
@@ -83,7 +96,7 @@ for (const page of pages) {
       for (const t of types) byType.set(t, node);
     }
 
-    for (const [type, props] of Object.entries(REQUIRED)) {
+    for (const [type, props] of Object.entries(requiredFor(rel))) {
       const node = byType.get(type);
       if (!node) {
         problems.push(`${rel}: missing JSON-LD node @type=${type}`);

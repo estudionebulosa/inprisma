@@ -167,8 +167,9 @@ Every entry in `_data/placeholders.json`:
 - [x] `eleventy.config.js` + `package.json` — build tooling, filters, global-data namespaces.
 - [x] Generators: `scripts/generate-schema.js`, `scripts/generate-cms-config.js`.
 - [x] Validator: `scripts/validate.js` (Ajv).
+- [x] Link checker: `scripts/link-check.js` (gate 6).
 - [x] `docs/00-overview … 06-prd-mapping`.
-- [x] `.github/workflows/ci.yml` — gates 1–3, 6, 7.
+- [x] `.github/workflows/ci.yml` — gates 1–3, 6.
 
 **Acceptance:** one example article renders cleanly through all three layouts; validator green; JSON-LD parses.
 **Verified:** build emits the canonical page + 3 syndication variants; JSON-LD parses with 6 node types; platform fields (kicker/framing/subject) render.

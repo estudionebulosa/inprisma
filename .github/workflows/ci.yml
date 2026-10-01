@@ -34,3 +34,7 @@ jobs:
       # Gate 3: JSON-LD parses and required nodes/fields are present.
       - name: Verify JSON-LD
         run: npm run verify:jsonld
+
+      # Gate 6: internal links resolve; external links are format-checked.
+      - name: Check links
+        run: npm run linkcheck
