@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  gates:
+    name: Content gates
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Gate 0: the generated artifacts must be reproducible from the contract.
+      - name: Generate schema from the contract
+        run: npm run generate
+
+      # Gate 1: schema validation. Gate 2: PRD content rules.
+      - name: Validate contract and content
+        run: npm run validate
+
+      - name: Build
+        run: npm run build
+
+      # Gate 3: JSON-LD parses and required nodes/fields are present.
+      - name: Verify JSON-LD
+        run: npm run verify:jsonld
