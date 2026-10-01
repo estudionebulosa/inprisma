@@ -5,5 +5,5 @@ _site/
 .DS_Store
 
 # Generated from _data/placeholders.json; built in CI, not committed
-schema/placeholders.schema.json
+schema/*.schema.json
 config/cms.config.yml

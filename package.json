@@ -15,9 +15,16 @@
   "scripts": {
     "build": "eleventy",
     "serve": "eleventy --serve",
-    "clean": "rm -rf _site"
+    "clean": "rm -rf _site",
+    "generate": "node scripts/generate-schema.js",
+    "validate": "node scripts/validate.js",
+    "check": "npm run generate && npm run validate && npm run build && npm run verify:jsonld",
+    "verify:jsonld": "node scripts/verify-jsonld.js"
   },
   "devDependencies": {
-    "@11ty/eleventy": "^3.1.6"
+    "@11ty/eleventy": "^3.1.6",
+    "ajv": "^8.20.0",
+    "ajv-formats": "^3.0.1",
+    "js-yaml": "^5.4.2"
   }
 }
