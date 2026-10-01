@@ -36,3 +36,4 @@ _data/placeholders.json  ──┬──► schema/*.schema.json     (JSON Schem
 | [05-guards-ci](05-guards-ci.md) | the CI gates and how to run them locally |
 | [06-prd-mapping](06-prd-mapping.md) | where each PRD section lands |
 | [07-cms](07-cms.md) | the Sveltia CMS editor, workflow and onboarding |
+| [08-automation](08-automation.md) | the automated filler, escalation and indexing |

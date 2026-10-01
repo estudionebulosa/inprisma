@@ -1,5 +1,6 @@
 node_modules/
 _site/
+_drafts/
 .cache/
 .env
 .DS_Store

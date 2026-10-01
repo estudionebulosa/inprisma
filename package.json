@@ -19,6 +19,8 @@
     "generate": "node scripts/generate-schema.js && node scripts/generate-cms-config.js",
     "validate": "node scripts/validate.js",
     "linkcheck": "node scripts/link-check.js",
+    "fill": "node scripts/fill.js",
+    "indexnow": "node scripts/indexnow.js",
     "serve:site": "node scripts/serve-site.js",
     "check:html-size": "node scripts/check-html-size.js",
     "check:lighthouse": "lhci collect --config lighthouserc.cjs && lhci assert --config lighthouserc.cjs",
