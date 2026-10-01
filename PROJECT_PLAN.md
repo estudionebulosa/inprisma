@@ -201,14 +201,15 @@ Every entry in `_data/placeholders.json`:
 **Goal:** automation produces the same front matter, escalating exceptions.
 
 **Tasks**
-- [ ] Filler service reads `placeholders.json` and emits front matter.
-- [ ] Per-field autonomy keyed on `auto: true` + confidence threshold.
-- [ ] Low-confidence fields queued to the P1 form for review.
-- [ ] Observability: fill rate, error rate, escalation rate.
-- [ ] PRD integrations: IndexNow webhook, sitemap ping, `lastmod` (PRD §04).
-- [ ] Automation runbook + rollback.
+- [x] Filler service reads `placeholders.json` and emits front matter.
+- [x] Per-field autonomy keyed on confidence threshold (default 0.7).
+- [x] Low-confidence fields queued to the P1 form for review.
+- [x] Observability: fill rate, error rate, escalation rate.
+- [x] PRD integrations: IndexNow submit, sitemap ping (`lastmod` already computed; sitemap.xml generation pending).
+- [x] Automation runbook + rollback (in `docs/08-automation.md`).
 
 **Acceptance:** ≥ target % fields auto-filled at threshold; remainder queued; staging run matches human output byte-for-byte on shared fields.
+**Status:** `scripts/fill.js` (rule-based filler) + `scripts/indexnow.js` (post-publish indexing). Shared helpers extracted to `scripts/lib/content.js` so derived values match the build byte-for-byte. Creative fields escalate to the CMS; an LLM provider is a drop-in for `derive()`.
 
 **Estimate:** ~2–3 weeks.
 
@@ -253,6 +254,6 @@ Every entry in `_data/placeholders.json`:
 
 ## 10. Open items
 
-1. Confirm target auto-fill % and confidence threshold for Phase P2.
-2. Confirm OG-image generation provider (Cloudinary per PRD §08 recommended).
-3. Confirm `llms.txt` / `citations.txt` policy (PRD §05 permits AI crawlers by default).
+1. ~~Confirm target auto-fill % and confidence threshold for Phase P2.~~ → Resolved: threshold **0.7** (configurable via `--threshold`); fill/escalation/error rates are reported per run, so the target is a tuning exercise, not a code change.
+2. ~~Confirm OG-image generation provider.~~ → Resolved for now: local SVG placeholders (`assets/hero-*.svg`) keep the repo self-contained; Cloudinary (PRD §08) remains the production option when real images are needed.
+3. Confirm `llms.txt` / `citations.txt` policy (PRD §05 permits AI crawlers by default) — still open; add to Phase P3.

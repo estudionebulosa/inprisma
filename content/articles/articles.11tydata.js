@@ -8,30 +8,11 @@
  * Convention: Eleventy 3.x, ESM.
  */
 
-const WORDS_PER_MINUTE = 200;
+import { WORDS_PER_MINUTE, countWords, slugify, toISO } from "../../scripts/lib/content.js";
 
 /* ------------------------------------------------------------------ */
 /* Helpers                                                             */
 /* ------------------------------------------------------------------ */
-
-function stripFrontMatter(raw = "") {
-  return raw.replace(/^---\r?\n[\s\S]*?\r?\n---/, "").trim();
-}
-
-function countWords(raw = "") {
-  const body = stripFrontMatter(raw);
-  return body ? body.split(/\s+/).length : 0;
-}
-
-function slugify(value = "") {
-  return String(value)
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
 
 function originOf(site = {}) {
   return String(site.website || "").replace(/\/+$/, "");
@@ -41,13 +22,6 @@ function absolute(url, origin) {
   if (!url) return url;
   if (/^[a-z][a-z0-9+.-]*:\/\//i.test(url)) return url;
   return `${origin}${url.startsWith("/") ? "" : "/"}${url}`;
-}
-
-function toISO(value, fallback) {
-  const date = new Date(value || fallback || Date.now());
-  return Number.isNaN(date.getTime())
-    ? new Date(fallback || Date.now()).toISOString()
-    : date.toISOString();
 }
 
 function resolveAuthor(data = {}) {
