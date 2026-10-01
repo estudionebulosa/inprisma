@@ -1,0 +1,11 @@
+{% if article.faq and article.faq.length %}
+<section class="faq" aria-labelledby="faq-heading">
+  <h2 id="faq-heading">Preguntas frecuentes</h2>
+  {% for item in article.faq %}
+  <details class="faq__item">
+    <summary class="faq__question">{{ item.q }}</summary>
+    <p class="faq__answer">{{ item.a }}</p>
+  </details>
+  {% endfor %}
+</section>
+{% endif %}

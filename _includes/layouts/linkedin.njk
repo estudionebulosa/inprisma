@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="{{ site.locale }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ article.title }} (LinkedIn)</title>
+  <meta name="robots" content="noindex, nofollow">
+</head>
+<body class="syndication syndication--linkedin">
+  <article class="syndication__article">
+    {% if article.platform and article.platform.linkedin and article.platform.linkedin.framing %}
+    <p class="syndication__framing">{{ article.platform.linkedin.framing }}</p>
+    {% endif %}
+
+    <h1 class="syndication__title">{{ article.title }}</h1>
+    {% if article.dek %}<p class="syndication__dek">{{ article.dek }}</p>{% endif %}
+
+    {% include "partials/byline.njk" %}
+
+    <div class="syndication__body">
+      {{ content | safe }}
+    </div>
+
+    {% include "partials/faq.njk" %}
+
+    {% if article.cta %}<p class="syndication__cta">{{ article.cta }}</p>{% endif %}
+
+    {% if article.tags and article.tags.length %}
+    <p class="syndication__hashtags">
+      {%- for tag in article.tags -%}
+        {%- if loop.index <= 3 -%}#{{ tag | replace('-', '') }} {% endif -%}
+      {%- endfor -%}
+    </p>
+    {% endif %}
+
+    {% include "partials/canonical-notice.njk" %}
+  </article>
+</body>
+</html>

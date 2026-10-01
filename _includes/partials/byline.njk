@@ -1,0 +1,8 @@
+<div class="byline">
+  {% if author.avatar %}<img class="byline__avatar" src="{{ author.avatar }}" alt="{{ author.name }}" width="40" height="40" loading="lazy">{% endif %}
+  <span class="byline__name">{{ author.name }}</span>
+  <span class="byline__title">{{ author.title }}</span>
+  <time class="byline__date" datetime="{{ computed.publishedISO }}">{{ computed.publishedISO | readableDate(site.locale) }}</time>
+  <span class="byline__reading">{{ computed.readingTime }} min</span>
+  {% if article.revision %}<span class="byline__revision">rev. {{ article.revision }}</span>{% endif %}
+</div>

@@ -178,8 +178,13 @@ function buildJsonLd(data = {}) {
 /* ------------------------------------------------------------------ */
 
 export default {
-  layout: "layouts/medium.njk",
   tags: ["articles"],
+  // One output per platform: web (canonical) + the three syndication targets.
+  pagination: {
+    data: "platforms",
+    size: 1,
+    alias: "platform",
+  },
   eleventyComputed: {
     "computed.slug": (data) => computeSlug(data),
 
@@ -205,7 +210,12 @@ export default {
       toISO(data.article?.updated, data.article?.date),
 
     "computed.jsonld": (data) => buildJsonLd(data),
+
+    // Platform selects the layout: the canonical web page, or a syndication layout.
+    layout: (data) => `${data.platform === "web" ? "article" : data.platform}.njk`,
   },
   permalink: (data) =>
-    `/${slugify(data.article?.category)}/${computeSlug(data)}/index.html`,
+    data.platform === "web"
+      ? `/${slugify(data.article?.category)}/${computeSlug(data)}/index.html`
+      : `/syndication/${data.platform}/${computeSlug(data)}/index.html`,
 };

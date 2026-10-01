@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="{{ site.locale }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ article.title }} (Medium)</title>
+  <meta name="robots" content="noindex, nofollow">
+</head>
+<body class="syndication syndication--medium">
+  <article class="syndication__article">
+    {% if article.platform and article.platform.medium and article.platform.medium.kicker %}
+    <p class="syndication__kicker">{{ article.platform.medium.kicker }}</p>
+    {% endif %}
+
+    <h1 class="syndication__title">{{ article.title }}</h1>
+    {% if article.dek %}<p class="syndication__dek">{{ article.dek }}</p>{% endif %}
+
+    {% include "partials/byline.njk" %}
+
+    {% if article.hook %}<p class="syndication__hook">{{ article.hook }}</p>{% endif %}
+
+    <div class="syndication__body">
+      {{ content | safe }}
+    </div>
+
+    {% include "partials/faq.njk" %}
+    {% include "partials/sources.njk" %}
+
+    {% if article.cta %}<p class="syndication__cta">{{ article.cta }}</p>{% endif %}
+
+    {% if article.tags and article.tags.length %}
+    <p class="syndication__tags">Tags: {{ article.tags | join(', ') }}</p>
+    {% endif %}
+
+    {% if article.shareCopy %}<p class="syndication__share">{{ article.shareCopy }}</p>{% endif %}
+
+    {% include "partials/canonical-notice.njk" %}
+  </article>
+</body>
+</html>

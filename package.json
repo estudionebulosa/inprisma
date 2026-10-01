@@ -1,0 +1,15 @@
+{
+  "name": "template-placeholder-system",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Template placeholder system: one validated content source rendered for web, Medium, LinkedIn and Substack.",
+  "scripts": {
+    "build": "eleventy",
+    "serve": "eleventy --serve",
+    "clean": "rm -rf _site"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^3.1.6"
+  }
+}

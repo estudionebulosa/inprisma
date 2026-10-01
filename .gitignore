@@ -1,8 +1,9 @@
 node_modules/
-_site/            # Eleventy build output
+_site/
 .cache/
 .env
 .DS_Store
-# generated, single-sourced from _data/placeholders.json — build in CI, don't commit
+
+# Generated from _data/placeholders.json; built in CI, not committed
 schema/placeholders.schema.json
 config/cms.config.yml

@@ -1,0 +1,10 @@
+{% if article.sources and article.sources.length %}
+<section class="sources" aria-labelledby="sources-heading">
+  <h2 id="sources-heading">Fuentes</h2>
+  <ul class="sources__list">
+    {% for source in article.sources %}
+    <li class="sources__item"><a href="{{ source.url | absoluteUrl(site.website) }}" rel="noopener noreferrer">{{ source.text }}</a></li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}

@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="{{ site.locale }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ article.title }} (Substack)</title>
+  <meta name="robots" content="noindex, nofollow">
+</head>
+<body class="syndication syndication--substack">
+  <article class="syndication__article">
+    <header class="syndication__preheader">
+      <span class="syndication__from">{{ site.name }}</span>
+      {% if article.platform and article.platform.substack and article.platform.substack.subject %}
+      <span class="syndication__subject">{{ article.platform.substack.subject }}</span>
+      {% endif %}
+    </header>
+
+    <h1 class="syndication__title">{{ article.title }}</h1>
+    {% if article.dek %}<p class="syndication__dek">{{ article.dek }}</p>{% endif %}
+
+    {% include "partials/byline.njk" %}
+
+    <div class="syndication__body">
+      {{ content | safe }}
+    </div>
+
+    {% include "partials/faq.njk" %}
+    {% include "partials/sources.njk" %}
+
+    {% if article.cta %}<p class="syndication__cta">{{ article.cta }}</p>{% endif %}
+
+    {% include "partials/canonical-notice.njk" %}
+  </article>
+</body>
+</html>

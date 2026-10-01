@@ -1,0 +1,5 @@
+<aside class="canonical-notice">
+  <p>Publicado originalmente en <a href="{{ computed.canonicalUrl }}">{{ site.name }}</a>.
+  Versión canónica: <a href="{{ computed.canonicalUrl }}">{{ computed.canonicalUrl | hostname }}</a>.</p>
+  <p>Autor: {{ author.name }}, {{ author.title }}. Revisión {{ article.revision }} · actualizado el {{ computed.modifiedISO | readableDate(site.locale) }}.</p>
+</aside>

@@ -61,18 +61,28 @@ editing produce the *same artifact* rather than diverging.
 ### 4.1 Repository layout
 
 ```
+package.json                       # Eleventy 3.x build scripts
+eleventy.config.js                 # dirs, filters, global-data namespaces, passthrough
 _data/placeholders.json            # schema: key, scope, type, required, validation, auto, variationAllowed, platforms
-_data/admin.json                   # site / author / org  (namespaced)
+_data/admin.json                   # site / author / org (one file; exposed as three globals)
+_data/platforms.json               # output targets: web, medium, linkedin, substack
 content/articles/<slug>.md         # body + front matter (per-article data)
-content/articles/articles.11tydata.js     # defaults + eleventyComputed (slug, canonical, readingTime, revision, JSON-LD)
-_includes/layouts/{medium,linkedin,substack}.njk
-_includes/partials/{meta,jsonld,social}.njk
+content/articles/articles.11tydata.js     # defaults + eleventyComputed (slug, canonical, readingTime, revision, JSON-LD) + platform pagination
+_includes/layouts/article.njk      # canonical web page (technical layer + content)
+_includes/layouts/{medium,linkedin,substack}.njk   # syndication (content layer only)
+_includes/partials/{meta,jsonld,social,byline,faq,sources,canonical-notice}.njk
 config/cms.config.yml              # GENERATED from placeholders.json
 schema/placeholders.schema.json    # GENERATED from placeholders.json
 scripts/                           # generate-schema, generate-cms-config, validate, build-jsonld
 docs/                              # 00-overview … 06-prd-mapping
 .github/workflows/ci.yml
 ```
+
+> Note: Eleventy namespaces data files by filename, so `_data/admin.json` would
+> otherwise appear as the `admin` global. `eleventy.config.js` uses
+> `addGlobalData` to expose its sections as `site`, `author` and `org`, matching
+> the field contract. The canonical page is emitted by `article.njk`; the three
+> syndication layouts are produced from the same article via platform pagination.
 
 ### 4.2 Two layers
 
@@ -148,18 +158,20 @@ Every entry in `_data/placeholders.json`:
 **Goal:** define and prove the shared field contract.
 
 **Tasks**
-- [ ] `_data/placeholders.json` — complete field schema.
-- [ ] `_data/admin.json` — namespaced `site` / `author` / `org`.
-- [ ] `content/articles/example-article.md` — reference article with full front matter.
-- [ ] `articles.11tydata.js` — defaults + `eleventyComputed` (slug, canonical, readingTime, revision, JSON-LD assembly).
-- [ ] Layouts: `medium.njk`, `linkedin.njk`, `substack.njk`.
-- [ ] Partials: `meta.njk`, `jsonld.njk`, `social.njk`.
+- [x] `_data/placeholders.json` — complete field schema.
+- [x] `_data/admin.json` — namespaced `site` / `author` / `org` (exposed via `addGlobalData`).
+- [x] `content/articles/example-article.md` — reference article with full front matter.
+- [x] `articles.11tydata.js` — defaults + `eleventyComputed` (slug, canonical, readingTime, revision, JSON-LD assembly) + platform pagination.
+- [x] Layouts: `article.njk` (canonical), `medium.njk`, `linkedin.njk`, `substack.njk`.
+- [x] Partials: `meta.njk`, `jsonld.njk`, `social.njk`, `byline.njk`, `faq.njk`, `sources.njk`, `canonical-notice.njk`.
+- [x] `eleventy.config.js` + `package.json` — build tooling, filters, global-data namespaces.
 - [ ] Generators: `scripts/generate-schema.js`, `scripts/generate-cms-config.js`.
 - [ ] Validator: `scripts/validate.js` (Ajv).
 - [ ] `docs/00-overview … 06-prd-mapping`.
 - [ ] `.github/workflows/ci.yml` — gates 1–3, 6, 7.
 
 **Acceptance:** one example article renders cleanly through all three layouts; validator green; JSON-LD parses.
+**Verified:** build emits the canonical page + 3 syndication variants; JSON-LD parses with 6 node types; platform fields (kicker/framing/subject) render.
 
 **Estimate:** ~1–1.5 weeks.
 
