@@ -19,11 +19,15 @@
     "generate": "node scripts/generate-schema.js && node scripts/generate-cms-config.js",
     "validate": "node scripts/validate.js",
     "linkcheck": "node scripts/link-check.js",
-    "check": "npm run generate && npm run validate && npm run clean && npm run build && npm run verify:jsonld && npm run linkcheck",
+    "serve:site": "node scripts/serve-site.js",
+    "check:html-size": "node scripts/check-html-size.js",
+    "check:lighthouse": "lhci autorun --config lighthouserc.cjs",
+    "check": "npm run generate && npm run validate && npm run clean && npm run build && npm run verify:jsonld && npm run linkcheck && npm run check:html-size",
     "verify:jsonld": "node scripts/verify-jsonld.js"
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.1.6",
+    "@lhci/cli": "^0.15.1",
     "ajv": "^8.20.0",
     "ajv-formats": "^3.0.1",
     "js-yaml": "^5.4.2"
