@@ -21,7 +21,7 @@ article:
     - cls
     - rendimiento web
   hero:
-    image: /assets/hero-core-web-vitals.jpg
+    image: /assets/hero-core-web-vitals.svg
     alt: "Panel de métricas de rendimiento con LCP, INP y CLS dentro de umbral"
   faq:
     - q: "¿Qué son las Core Web Vitals?"

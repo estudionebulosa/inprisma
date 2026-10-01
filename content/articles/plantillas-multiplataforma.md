@@ -20,7 +20,7 @@ article:
     - sindicacion
     - publicacion multiplataforma
   hero:
-    image: /assets/hero-plantillas-multiplataforma.jpg
+    image: /assets/hero-plantillas-multiplataforma.svg
     alt: "Una fuente de contenido ramificándose en cuatro plantillas de destino"
   faq:
     - q: "¿Qué es una plantilla multiplataforma?"

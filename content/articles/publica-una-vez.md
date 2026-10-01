@@ -23,7 +23,7 @@ article:
     - core web vitals
     - json-ld
   hero:
-    image: /assets/hero-publica-una-vez.jpg
+    image: /assets/hero-publica-una-vez.svg
     alt: "Un único contrato de contenido alimentando cuatro destinos"
   faq:
     - q: "¿Necesito escribir metaetiquetas o JSON-LD a mano?"

@@ -4,7 +4,7 @@
     "title": "Templates optimizados para SEO, AEO y distribución multiplataforma",
     "website": "https://example.com",
     "locale": "es-ES",
-    "logo": "/assets/logo.png",
+    "logo": "/assets/logo.svg",
     "social": {
       "x": "https://x.com/example",
       "linkedin": "https://www.linkedin.com/company/example",
@@ -23,7 +23,7 @@
     ],
     "email": "editor@example.com",
     "website": "https://example.com/sobre",
-    "avatar": "/assets/avatar.jpg",
+    "avatar": "/assets/avatar.svg",
     "sameAs": [
       "https://x.com/example",
       "https://www.linkedin.com/in/example",
@@ -34,7 +34,7 @@
     "name": "Example Media",
     "legalName": "Example Media S.L.",
     "url": "https://example.com",
-    "logo": "/assets/logo.png",
+    "logo": "/assets/logo.svg",
     "sameAs": [
       "https://www.linkedin.com/company/example",
       "https://github.com/example"

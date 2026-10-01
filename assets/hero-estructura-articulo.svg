@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Cómo estructurar un artículo para SEO, AEO y redes">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b57d0"/>
+      <stop offset="1" stop-color="#6a1bb0"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#g)"/>
+  <text x="60" y="315" font-family="system-ui, sans-serif" font-size="72" font-weight="700" fill="#fff">Cómo estructurar un artículo</text>
+  <text x="60" y="390" font-family="system-ui, sans-serif" font-size="40" fill="#e0e7ff">SEO · AEO · redes</text>
+</svg>

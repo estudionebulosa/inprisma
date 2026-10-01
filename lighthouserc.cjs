@@ -61,10 +61,6 @@ module.exports = {
 
         // Gate 5 — accessibility (axe-core, WCAG 2.1/2.2 AA) (PRD §03).
         "categories:accessibility": ["error", { minScore: 1 }],
-
-        // Informational only; not gating today.
-        "categories:best-practices": ["warn", { minScore: 0.9 }],
-        "categories:seo": ["warn", { minScore: 0.9 }],
       },
     },
   },

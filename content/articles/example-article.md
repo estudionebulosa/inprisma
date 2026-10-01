@@ -23,7 +23,7 @@ article:
     - plantillas
     - core web vitals
   hero:
-    image: /assets/hero-estructura-articulo.jpg
+    image: /assets/hero-estructura-articulo.svg
     alt: "Diagrama de las cinco capas de un artículo optimizado"
   faq:
     - q: "¿Qué diferencia hay entre SEO y AEO?"

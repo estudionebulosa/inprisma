@@ -21,7 +21,7 @@ article:
     - structured data
     - aeo
   hero:
-    image: /assets/hero-schema-json-ld.jpg
+    image: /assets/hero-schema-json-ld.svg
     alt: "Grafo de nodos schema.org conectando artículo, autor y organización"
   faq:
     - q: "¿Para qué sirve el JSON-LD?"

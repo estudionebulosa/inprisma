@@ -1,0 +1,192 @@
+/* inprisma — minimal, accessible base styles.
+ *
+ * Kept deliberately small: the article output must stay fast and lean. The
+ * critical HTML (page minus JSON-LD) is gated under 10kb, so these styles live
+ * in an external file rather than inlined in <head>.
+ */
+
+:root {
+  --ink: #1a1a1a;
+  --muted: #55575c;
+  --link: #0066cc; /* ≥ 4.5:1 contrast on white (WCAG AA) */
+  --visited: #6a1bb0;
+  --line: #e4e4e7;
+  --measure: 42rem;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--ink);
+  background: #fff;
+}
+
+a {
+  color: var(--link);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+a:visited {
+  color: var(--visited);
+}
+
+a:hover {
+  text-decoration-thickness: 2px;
+}
+
+/* Images must never shift layout: reserve space and contain within the line. */
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.site-header {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.site-header__brand {
+  font-weight: 700;
+  font-size: 1.125rem;
+  text-decoration: none;
+}
+
+main {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 4rem;
+}
+
+h1,
+h2 {
+  line-height: 1.25;
+  overflow-wrap: break-word;
+}
+
+h1 {
+  font-size: clamp(1.75rem, 4vw, 2.4rem);
+  margin: 0 0 0.75rem;
+}
+
+h2 {
+  font-size: 1.375rem;
+  margin-top: 2rem;
+}
+
+p {
+  margin: 0 0 1.1rem;
+}
+
+.article__dek {
+  font-size: 1.125rem;
+  color: var(--muted);
+  margin-bottom: 1.25rem;
+}
+
+.article__hook {
+  font-size: 1.125rem;
+  border-left: 3px solid var(--link);
+  padding-left: 0.9rem;
+  margin: 1.5rem 0;
+}
+
+/* Byline */
+.byline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 1.5rem;
+}
+
+.byline__avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.byline__name {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* FAQ */
+.faq__item {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 0.6rem 0.9rem;
+  margin-bottom: 0.6rem;
+}
+
+.faq__question {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* Sources & internal links */
+.sources__list,
+.article__internal-links ul {
+  padding-left: 1.2rem;
+}
+
+.article__internal-links {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+}
+
+.article__cta {
+  font-weight: 600;
+  margin-top: 2rem;
+}
+
+.site-footer {
+  border-top: 1px solid var(--line);
+  padding: 1.25rem;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+/* Home */
+.home__title {
+  margin-bottom: 0.25rem;
+}
+
+.home__tagline {
+  color: var(--muted);
+  margin-bottom: 2rem;
+}
+
+.home__articles {
+  padding-left: 1.2rem;
+}
+
+.home__dek {
+  color: var(--muted);
+}
+
+/* Syndication copies (content-only) */
+.syndication {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem;
+}
