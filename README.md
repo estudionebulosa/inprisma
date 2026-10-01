@@ -53,6 +53,7 @@ tags and dates for you.
 - 🔍 **Automatic JSON-LD** — `NewsArticle`, `FAQPage`, `BreadcrumbList`, `Person`, `Organization`.
 - 🏷️ **Full SEO + Open Graph** — absolute canonical, Twitter cards, per-platform tags.
 - ⚡ **Eleventy speed** — zero client JavaScript in the article, full control of the critical HTML.
+- 🖊️ **Sveltia CMS** — a generated form (`/admin/`) for non-developers, with a draft → review → publish workflow.
 - 🧪 **A working example** that builds in seconds.
 
 ## 🎯 Why you should clone this today

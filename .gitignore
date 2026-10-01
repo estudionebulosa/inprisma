@@ -6,7 +6,7 @@ _site/
 
 # Generated from _data/placeholders.json; built in CI, not committed
 schema/*.schema.json
-config/cms.config.yml
+admin/config.yml
 
 # Lighthouse CI artifacts
 .lhci/

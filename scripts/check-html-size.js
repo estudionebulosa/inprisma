@@ -42,7 +42,9 @@ const JSONLD_RE = /<script[^>]*type=["']application\/ld\+json["'][^>]*>[\s\S]*?<
 
 const pages = walk(SITE_DIR).filter(
   (p) =>
-    !p.includes("/syndication/") && !p.endsWith("prd_news_site_optimization.html"),
+    !p.includes("/syndication/") &&
+    !p.includes("/admin/") &&
+    !p.endsWith("prd_news_site_optimization.html"),
 );
 
 const problems = [];

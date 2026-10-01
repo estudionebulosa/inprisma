@@ -31,6 +31,7 @@ const urls = walk(SITE_DIR)
   .filter(
     (p) =>
       !p.includes(`${join("", "syndication")}`) &&
+      !p.includes(`${join("", "admin")}`) &&
       !p.endsWith("prd_news_site_optimization.html"),
   )
   .map((p) => {

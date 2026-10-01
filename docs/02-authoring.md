@@ -71,9 +71,10 @@ Edit it once; every article inherits it.
 A Sveltia/Decap form is generated from the same contract:
 
 ```bash
-npm run generate   # writes config/cms.config.yml
+npm run generate   # writes admin/config.yml
 ```
 
 The config groups `site` / `author` / `org` under **Ajustes del sitio** and
-exposes the authorable `article.*` fields as the **Artículos** collection, with
-draft → in review → published states enabled.
+exposes the authorable `article.*` fields plus the Markdown `body` as the
+**Artículos** collection, with the draft → in review → published workflow
+enabled. See [`07-cms.md`](07-cms.md) for the full guide.

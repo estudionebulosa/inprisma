@@ -35,3 +35,4 @@ _data/placeholders.json  ──┬──► schema/*.schema.json     (JSON Schem
 | [04-placeholders](04-placeholders.md) | the field taxonomy |
 | [05-guards-ci](05-guards-ci.md) | the CI gates and how to run them locally |
 | [06-prd-mapping](06-prd-mapping.md) | where each PRD section lands |
+| [07-cms](07-cms.md) | the Sveltia CMS editor, workflow and onboarding |
