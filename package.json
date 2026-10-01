@@ -16,7 +16,7 @@
     "build": "eleventy",
     "serve": "eleventy --serve",
     "clean": "rm -rf _site",
-    "generate": "node scripts/generate-schema.js",
+    "generate": "node scripts/generate-schema.js && node scripts/generate-cms-config.js",
     "validate": "node scripts/validate.js",
     "check": "npm run generate && npm run validate && npm run build && npm run verify:jsonld",
     "verify:jsonld": "node scripts/verify-jsonld.js"
