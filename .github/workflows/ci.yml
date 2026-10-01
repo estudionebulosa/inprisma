@@ -38,3 +38,14 @@ jobs:
       # Gate 6: internal links resolve; external links are format-checked.
       - name: Check links
         run: npm run linkcheck
+
+      # Gate 4 (part): critical HTML under 10kb, no browser needed.
+      - name: Check critical HTML size
+        run: npm run check:html-size
+
+      # Gate 4 (LCP/CLS) + Gate 5 (axe-core accessibility) via Lighthouse.
+      # Lighthouse uses axe-core for its accessibility category.
+      - uses: browser-actions/setup-chrome@v1
+
+      - name: Run Lighthouse (performance + accessibility)
+        run: npm run check:lighthouse
