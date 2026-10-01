@@ -1,0 +1,527 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-sans); }
+  .prd { max-width: 680px; padding: 0 0 2rem; }
+  .cover { border-bottom: 0.5px solid var(--color-border-tertiary); padding-bottom: 1.5rem; margin-bottom: 1.5rem; }
+  .cover-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1rem; }
+  .badge { font-size: 11px; padding: 3px 10px; border-radius: 20px; font-weight: 500; }
+  .badge-ver { background: var(--color-background-info); color: var(--color-text-info); }
+  .badge-status { background: var(--color-background-success); color: var(--color-text-success); }
+  .badge-date { background: var(--color-background-secondary); color: var(--color-text-secondary); }
+  h1 { font-size: 22px; font-weight: 500; color: var(--color-text-primary); line-height: 1.3; margin-bottom: 0.4rem; }
+  .subtitle { font-size: 14px; color: var(--color-text-secondary); line-height: 1.6; }
+  .toc { background: var(--color-background-secondary); border-radius: var(--border-radius-lg); padding: 1rem 1.25rem; margin-bottom: 1.5rem; }
+  .toc-title { font-size: 12px; font-weight: 500; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.75rem; }
+  .toc-list { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+  .toc-list li a { font-size: 13px; color: var(--color-text-info); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+  .toc-list li a:hover { text-decoration: underline; }
+  .toc-num { font-size: 11px; color: var(--color-text-tertiary); min-width: 20px; }
+  .section { margin-bottom: 2rem; }
+  .section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 0.5px solid var(--color-border-tertiary); }
+  .section-num { width: 28px; height: 28px; border-radius: 50%; background: var(--color-background-info); color: var(--color-text-info); font-size: 12px; font-weight: 500; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  h2 { font-size: 18px; font-weight: 500; color: var(--color-text-primary); }
+  h3 { font-size: 15px; font-weight: 500; color: var(--color-text-primary); margin: 1rem 0 0.5rem; }
+  p { font-size: 14px; color: var(--color-text-secondary); line-height: 1.7; margin-bottom: 0.75rem; }
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin: 1rem 0; }
+  .card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 0.9rem 1rem; }
+  .card-icon { font-size: 18px; margin-bottom: 6px; color: var(--color-text-info); }
+  .card-label { font-size: 11px; color: var(--color-text-tertiary); font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+  .card-value { font-size: 20px; font-weight: 500; color: var(--color-text-primary); }
+  .card-desc { font-size: 12px; color: var(--color-text-secondary); margin-top: 4px; }
+  .req-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 0.75rem 0; }
+  .req-table th { text-align: left; padding: 8px 10px; font-size: 11px; font-weight: 500; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 0.5px solid var(--color-border-tertiary); }
+  .req-table td { padding: 9px 10px; border-bottom: 0.5px solid var(--color-border-tertiary); vertical-align: top; color: var(--color-text-secondary); }
+  .req-table tr:last-child td { border-bottom: none; }
+  .req-table td:first-child { color: var(--color-text-primary); font-weight: 500; }
+  .priority { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 20px; }
+  .p1 { background: var(--color-background-danger); color: var(--color-text-danger); }
+  .p2 { background: var(--color-background-warning); color: var(--color-text-warning); }
+  .p3 { background: var(--color-background-success); color: var(--color-text-success); }
+  .callout { border-left: 2px solid; border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0; padding: 0.75rem 1rem; margin: 0.75rem 0; }
+  .callout-info { border-color: var(--color-border-info); background: var(--color-background-info); }
+  .callout-warn { border-color: var(--color-border-warning); background: var(--color-background-warning); }
+  .callout-success { border-color: var(--color-border-success); background: var(--color-background-success); }
+  .callout-danger { border-color: var(--color-border-danger); background: var(--color-background-danger); }
+  .callout p { font-size: 13px; margin: 0; }
+  .callout-info p { color: var(--color-text-info); }
+  .callout-warn p { color: var(--color-text-warning); }
+  .callout-success p { color: var(--color-text-success); }
+  .callout-danger p { color: var(--color-text-danger); }
+  .callout strong { font-weight: 500; }
+  .stack-row { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 0.5px solid var(--color-border-tertiary); }
+  .stack-row:last-child { border-bottom: none; }
+  .stack-icon { font-size: 16px; color: var(--color-text-info); flex-shrink: 0; padding-top: 1px; }
+  .stack-text { flex: 1; }
+  .stack-name { font-size: 13px; font-weight: 500; color: var(--color-text-primary); }
+  .stack-desc { font-size: 12px; color: var(--color-text-secondary); margin-top: 2px; }
+  .verdict-card { border-radius: var(--border-radius-lg); border: 0.5px solid var(--color-border-tertiary); padding: 1rem 1.25rem; margin: 0.75rem 0; }
+  .verdict-header { display: flex; align-items: center; gap: 8px; margin-bottom: 0.5rem; }
+  .verdict-icon { font-size: 18px; }
+  .verdict-title { font-size: 14px; font-weight: 500; color: var(--color-text-primary); }
+  .verdict-body { font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; }
+  .verdict-rec { background: var(--color-background-success); border-color: var(--color-border-success); }
+  .verdict-rec .verdict-title { color: var(--color-text-success); }
+  .verdict-warn { background: var(--color-background-warning); border-color: var(--color-border-warning); }
+  .verdict-warn .verdict-title { color: var(--color-text-warning); }
+  .timeline { display: flex; flex-direction: column; gap: 0; }
+  .phase { display: flex; gap: 12px; }
+  .phase-line { display: flex; flex-direction: column; align-items: center; }
+  .phase-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--color-text-info); flex-shrink: 0; margin-top: 5px; }
+  .phase-connector { width: 1px; background: var(--color-border-tertiary); flex: 1; min-height: 20px; }
+  .phase:last-child .phase-connector { display: none; }
+  .phase-content { padding-bottom: 1.25rem; flex: 1; }
+  .phase-tag { font-size: 11px; color: var(--color-text-info); font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; }
+  .phase-title { font-size: 14px; font-weight: 500; color: var(--color-text-primary); margin: 2px 0; }
+  .phase-items { font-size: 12px; color: var(--color-text-secondary); line-height: 1.7; }
+  .metric-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 0.75rem 0; }
+  .metric-box { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 0.75rem; }
+  .metric-num { font-size: 20px; font-weight: 500; color: var(--color-text-primary); }
+  .metric-label { font-size: 11px; color: var(--color-text-tertiary); margin-top: 2px; }
+  .divider { border: none; border-top: 0.5px solid var(--color-border-tertiary); margin: 1.5rem 0; }
+  ul.req-list { list-style: none; display: flex; flex-direction: column; gap: 6px; margin: 0.5rem 0; }
+  ul.req-list li { font-size: 13px; color: var(--color-text-secondary); display: flex; gap: 8px; line-height: 1.5; }
+  ul.req-list li::before { content: "—"; color: var(--color-text-tertiary); flex-shrink: 0; }
+  .platform-compare { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin: 0.75rem 0; }
+  .plat-card { border-radius: var(--border-radius-md); padding: 0.75rem; font-size: 12px; color: var(--color-text-secondary); border: 0.5px solid var(--color-border-tertiary); }
+  .plat-card strong { display: block; font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 4px; }
+  .signal-badge { font-size: 11px; padding: 1px 7px; border-radius: 20px; display: inline-block; margin-top: 4px; }
+  .sig-green { background: var(--color-background-success); color: var(--color-text-success); }
+  .sig-amber { background: var(--color-background-warning); color: var(--color-text-warning); }
+  .sig-red { background: var(--color-background-danger); color: var(--color-text-danger); }
+  .footnote { font-size: 12px; color: var(--color-text-tertiary); margin-top: 1.5rem; padding-top: 1rem; border-top: 0.5px solid var(--color-border-tertiary); }
+</style>
+
+<div class="prd">
+
+  <!-- COVER -->
+  <div class="cover" style="padding-top:1.5rem">
+    <div class="cover-meta">
+      <span class="badge badge-ver">v1.0</span>
+      <span class="badge badge-status">Aprobado para desarrollo</span>
+      <span class="badge badge-date"><i class="ti ti-calendar" aria-hidden="true" style="font-size:12px;vertical-align:-1px;margin-right:3px"></i>Mayo 2026</span>
+    </div>
+    <h1>PRD — Plataforma de Noticias Ultra-Optimizada</h1>
+    <p class="subtitle">Documento de Requisitos de Producto para la construcción de un sitio de noticias posicionado como referencia en rendimiento técnico, visibilidad multimotor y distribución multiplataforma.</p>
+  </div>
+
+  <!-- MÉTRICAS OBJETIVO -->
+  <div class="metric-grid" style="margin-bottom:1.5rem">
+    <div class="metric-box"><div class="metric-num">&lt; 1s</div><div class="metric-label">LCP objetivo</div></div>
+    <div class="metric-box"><div class="metric-num">100</div><div class="metric-label">Lighthouse score</div></div>
+    <div class="metric-box"><div class="metric-num">&lt; 50ms</div><div class="metric-label">TTFB en edge</div></div>
+    <div class="metric-box"><div class="metric-num">0</div><div class="metric-label">CLS acumulado</div></div>
+    <div class="metric-box"><div class="metric-num">7+</div><div class="metric-label">Plataformas indexadas</div></div>
+    <div class="metric-box"><div class="metric-num">&lt; 10kb</div><div class="metric-label">HTML crítico</div></div>
+  </div>
+
+  <!-- TOC -->
+  <div class="toc">
+    <div class="toc-title">Índice</div>
+    <ul class="toc-list">
+      <li><a href="#s1"><span class="toc-num">01</span> Arquitectura de rendimiento</a></li>
+      <li><a href="#s2"><span class="toc-num">02</span> Estrategia de contenido</a></li>
+      <li><a href="#s3"><span class="toc-num">03</span> Optimización multimotor (SEO)</a></li>
+      <li><a href="#s4"><span class="toc-num">04</span> Herramientas de indexación e integraciones</a></li>
+      <li><a href="#s5"><span class="toc-num">05</span> Optimización para IA</a></li>
+      <li><a href="#s6"><span class="toc-num">06</span> Optimización para redes sociales</a></li>
+      <li><a href="#s7"><span class="toc-num">07</span> Debate estratégico: una plataforma vs. múltiples</a></li>
+      <li><a href="#s8"><span class="toc-num">08</span> Stack tecnológico recomendado</a></li>
+      <li><a href="#s9"><span class="toc-num">09</span> Hoja de ruta</a></li>
+    </ul>
+  </div>
+
+  <!-- SECCIÓN 1 -->
+  <div class="section" id="s1">
+    <div class="section-header">
+      <div class="section-num">01</div>
+      <h2>Arquitectura de rendimiento</h2>
+    </div>
+    <p>El rendimiento no es una capa opcional: es la base que determina si el resto de optimizaciones tienen efecto. Un sitio lento pierde posición antes de que cualquier señal de contenido o autoridad llegue a pesar.</p>
+
+    <h3>Requisitos de Core Web Vitals</h3>
+    <table class="req-table">
+      <thead><tr><th>Métrica</th><th>Umbral</th><th>Prioridad</th><th>Estrategia</th></tr></thead>
+      <tbody>
+        <tr><td>LCP (Largest Contentful Paint)</td><td>&lt; 1.2s</td><td><span class="priority p1">P0</span></td><td>Imagen hero con fetchpriority="high", preload link</td></tr>
+        <tr><td>INP (Interaction to Next Paint)</td><td>&lt; 100ms</td><td><span class="priority p1">P0</span></td><td>Sin JS en critical path, interacciones en web workers</td></tr>
+        <tr><td>CLS (Cumulative Layout Shift)</td><td>0.0</td><td><span class="priority p1">P0</span></td><td>Dimensiones explícitas en todos los medios</td></tr>
+        <tr><td>TTFB</td><td>&lt; 50ms</td><td><span class="priority p1">P0</span></td><td>CDN edge + SSG/ISR + prerender</td></tr>
+        <tr><td>FCP (First Contentful Paint)</td><td>&lt; 0.8s</td><td><span class="priority p2">P1</span></td><td>CSS crítico inline, defer no-crítico</td></tr>
+        <tr><td>TBT (Total Blocking Time)</td><td>&lt; 50ms</td><td><span class="priority p2">P1</span></td><td>Code splitting, lazy load de módulos</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Arquitectura de entrega</h3>
+    <ul class="req-list">
+      <li>Generación estática (SSG) para artículos publicados; ISR (Incremental Static Regeneration) con revalidación &lt; 60s para breaking news</li>
+      <li>Edge CDN global (Cloudflare / Vercel Edge) con cache headers correctos: <code>Cache-Control: public, s-maxage=60, stale-while-revalidate=3600</code></li>
+      <li>HTML inicial completo sin hidratación: el lector puede leer antes de que cargue JavaScript</li>
+      <li>Critical CSS inline (&lt; 14kb) extraído automáticamente en build time</li>
+      <li>Imágenes: formato AVIF + WebP con fallback JPEG, responsive srcset, lazy load nativo excepto hero</li>
+      <li>Fuentes: <code>font-display: swap</code>, subset unicode, preload solo para la fuente primaria</li>
+      <li>Sin render-blocking: todo script con <code>defer</code> o <code>type="module"</code></li>
+    </ul>
+
+    <div class="callout callout-info">
+      <p><strong>Principio guía:</strong> cada kilobyte eliminado en el critical path tiene mayor impacto que cualquier optimización posterior. El HTML de la portada debe ser funcional en menos de 10kb.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SECCIÓN 2 -->
+  <div class="section" id="s2">
+    <div class="section-header">
+      <div class="section-num">02</div>
+      <h2>Estrategia de contenido</h2>
+    </div>
+    <p>El contenido resuelve dos problemas simultáneos: atraer tráfico consistente y retener lectores. Combinar contenido de actualidad con piezas evergreen maximiza la superficie indexable y el valor a largo plazo.</p>
+
+    <h3>Arquitectura de contenido dual</h3>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon"><i class="ti ti-bolt" aria-hidden="true"></i></div>
+        <div class="card-label">Noticias de actualidad</div>
+        <div class="card-value">30%</div>
+        <div class="card-desc">Breaking news, análisis de eventos recientes. Alta rotación, tráfico pico.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon"><i class="ti ti-leaf" aria-hidden="true"></i></div>
+        <div class="card-label">Contenido evergreen</div>
+        <div class="card-value">70%</div>
+        <div class="card-desc">Guías, explicadores, glosarios. Tráfico sostenido meses o años.</div>
+      </div>
+    </div>
+
+    <h3>Requisitos de contenido evergreen</h3>
+    <table class="req-table">
+      <thead><tr><th>Atributo</th><th>Requisito</th><th>Prioridad</th></tr></thead>
+      <tbody>
+        <tr><td>Actualización periódica</td><td>Revisión mínima cada 90 días con fecha de última actualización visible</td><td><span class="priority p1">P0</span></td></tr>
+        <tr><td>Interlinking</td><td>3-5 enlaces internos contextuales por artículo, con anchor text descriptivo</td><td><span class="priority p1">P0</span></td></tr>
+        <tr><td>Sección FAQ</td><td>Preguntas estructuradas con schema FAQPage para featured snippets</td><td><span class="priority p2">P1</span></td></tr>
+        <tr><td>Resumen ejecutivo</td><td>Párrafo de 2-3 frases al inicio (facilita Answer Engine / AI Overview)</td><td><span class="priority p1">P0</span></td></tr>
+        <tr><td>Profundidad</td><td>Mínimo 1.200 palabras para artículos de pilar; 600 para noticias</td><td><span class="priority p2">P1</span></td></tr>
+        <tr><td>Canonical correcta</td><td>URL canónica explícita, sin duplicados por parámetros</td><td><span class="priority p1">P0</span></td></tr>
+        <tr><td>Breadcrumbs</td><td>Navegación jerárquica con schema BreadcrumbList</td><td><span class="priority p2">P1</span></td></tr>
+      </tbody>
+    </table>
+
+    <h3>Taxonomía y estructura URL</h3>
+    <ul class="req-list">
+      <li>Estructura plana: <code>/categoria/slug-articulo</code> — máximo 2 niveles</li>
+      <li>Slugs en español, sin stop words, sin fechas en URL (para evergreen)</li>
+      <li>Para noticias con fecha relevante: <code>/noticias/2026/slug</code> como subsección separada</li>
+      <li>Páginas de categoría con contenido editorial propio (no solo lista de artículos)</li>
+      <li>Paginación con <code>rel="next/prev"</code> y enlace a "ver todo"</li>
+    </ul>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SECCIÓN 3 -->
+  <div class="section" id="s3">
+    <div class="section-header">
+      <div class="section-num">03</div>
+      <h2>Optimización multimotor (SEO técnico)</h2>
+    </div>
+    <p>Los grandes motores de búsqueda comparten señales fundamentales (Core Web Vitals, structured data, relevancia semántica), pero cada uno tiene particularidades que conviene cubrir.</p>
+
+    <h3>Señales universales (todos los motores)</h3>
+    <table class="req-table">
+      <thead><tr><th>Requisito</th><th>Detalle técnico</th><th>Impacto</th></tr></thead>
+      <tbody>
+        <tr><td>Schema markup completo</td><td>NewsArticle, Article, FAQPage, BreadcrumbList, Organization, WebSite con SearchAction</td><td><span class="priority p1">P0</span></td></tr>
+        <tr><td>Open Graph completo</td><td>og:title, og:description, og:image (1200×630), og:type, og:url, article:published_time</td><td><span class="priority p1">P0</span></td></tr>
+        <tr><td>Sitemap XML dinámico</td><td>Separado por tipo: sitemap-news.xml (Google News), sitemap-articles.xml, sitemap-pages.xml. Actualización automática en cada publicación.</td><td><span class="priority p1">P0</span></td></tr>
+        <tr><td>robots.txt</td><td>Permitir todos los crawlers principales; bloquear solo admin/API. Enlace a sitemap.</td><td><span class="priority p1">P0</span></td></tr>
+        <tr><td>HTTPS + HSTS</td><td>TLS 1.3, HSTS max-age=31536000, includeSubDomains</td><td><span class="priority p1">P0</span></td></tr>
+        <tr><td>Mobile-first</td><td>Diseño responsive, viewport correcto, fuentes ≥ 16px en móvil</td><td><span class="priority p1">P0</span></td></tr>
+        <tr><td>Accesibilidad WCAG 2.1 AA</td><td>Alt en imágenes, contraste 4.5:1, headings jerárquicos, aria-labels</td><td><span class="priority p2">P1</span></td></tr>
+      </tbody>
+    </table>
+
+    <h3>Particularidades por plataforma</h3>
+    <div class="platform-compare">
+      <div class="plat-card">
+        <strong><i class="ti ti-brand-google" aria-hidden="true" style="font-size:13px;margin-right:4px"></i>Google</strong>
+        E-E-A-T signals: byline con autor, About page, links a fuentes externas. Google News approval. Acceptable ads policy. HowTo/FAQ schema para featured snippets.
+        <span class="signal-badge sig-green">Máxima prioridad</span>
+      </div>
+      <div class="plat-card">
+        <strong><i class="ti ti-brand-bing" aria-hidden="true" style="font-size:13px;margin-right:4px"></i>Bing</strong>
+        IndexNow para notificación instantánea. Bing News submission. Mayor peso a señales sociales (LinkedIn, X). Schema Speakable para Cortana/Edge.
+        <span class="signal-badge sig-amber">Alta prioridad</span>
+      </div>
+      <div class="plat-card">
+        <strong><i class="ti ti-brand-meta" aria-hidden="true" style="font-size:13px;margin-right:4px"></i>Meta</strong>
+        OG tags optimizados para Facebook e Instagram. Instant Articles (opcional). Facebook News integration. Imágenes cuadradas para feed (1:1) además de 16:9.
+        <span class="signal-badge sig-amber">Alta prioridad</span>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SECCIÓN 4 -->
+  <div class="section" id="s4">
+    <div class="section-header">
+      <div class="section-num">04</div>
+      <h2>Herramientas de indexación e integraciones</h2>
+    </div>
+    <p>La indexación rápida es diferencial competitivo en noticias: un artículo no indexado en los primeros 5 minutos pierde el ciclo de tráfico del breaking news.</p>
+
+    <div class="stack-row">
+      <div class="stack-icon"><i class="ti ti-brand-google" aria-hidden="true"></i></div>
+      <div class="stack-text">
+        <div class="stack-name">Google Search Console</div>
+        <div class="stack-desc">Verificación de dominio (DNS o archivo). Sitemap submission. Monitorización de cobertura e índice. URL Inspection API para submit automático en publicación. Alertas de Core Web Vitals en producción. Informe de rich results para validar schema.</div>
+      </div>
+    </div>
+    <div class="stack-row">
+      <div class="stack-icon"><i class="ti ti-bolt" aria-hidden="true"></i></div>
+      <div class="stack-text">
+        <div class="stack-name">IndexNow (Bing, Yandex, Seznam, Naver)</div>
+        <div class="stack-desc">Protocolo de notificación push: en cada publicación, el CMS llama al endpoint de IndexNow con la URL nueva. Un solo envío notifica a todos los motores adheridos. Implementar como webhook en pipeline de publicación. Tiempo de indexación: minutos en lugar de días.</div>
+      </div>
+    </div>
+    <div class="stack-row">
+      <div class="stack-icon"><i class="ti ti-brand-bing" aria-hidden="true"></i></div>
+      <div class="stack-text">
+        <div class="stack-name">Bing Webmaster Tools</div>
+        <div class="stack-desc">Verificación independiente. Bing News Feed submission. Monitorización de crawl errors específicos de Bing. Keyword research tool complementario. Habilitación de IndexNow desde el panel.</div>
+      </div>
+    </div>
+    <div class="stack-row">
+      <div class="stack-icon"><i class="ti ti-news" aria-hidden="true"></i></div>
+      <div class="stack-text">
+        <div class="stack-name">Google News Publisher Center</div>
+        <div class="stack-desc">Aprobación editorial del dominio. Configuración de secciones y temas. Sitemap de noticias dedicado (lastmod con precisión de segundos, news:publication_date). Artículos elegibles solo si publicados en las últimas 48h — crítico para actualidad.</div>
+      </div>
+    </div>
+    <div class="stack-row">
+      <div class="stack-icon"><i class="ti ti-rss" aria-hidden="true"></i></div>
+      <div class="stack-text">
+        <div class="stack-name">RSS / Atom Feed optimizado</div>
+        <div class="stack-desc">Feed completo (full content) para agregadores. Feed separado por categoría. Media RSS con imágenes correctas para Apple News, Flipboard, SmartNews. Autodiscovery link en HTML head.</div>
+      </div>
+    </div>
+    <div class="stack-row">
+      <div class="stack-icon"><i class="ti ti-chart-bar" aria-hidden="true"></i></div>
+      <div class="stack-text">
+        <div class="stack-name">Analytics y monitorización</div>
+        <div class="stack-desc">GA4 + BigQuery para retención de datos raw. Plausible o Fathom como alternativa privacy-first. Real User Monitoring (Sentry, Vercel Analytics) para CWV en producción. Alertas automatizadas por degradación de TTFB o LCP.</div>
+      </div>
+    </div>
+
+    <div class="callout callout-warn">
+      <p><strong>Automatización crítica:</strong> El pipeline de publicación debe llamar automáticamente a IndexNow, ping de sitemap a Google y actualizar lastmod en el sitemap al momento de publicación. Sin esto, el tiempo de indexación se mide en horas, no minutos.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SECCIÓN 5 -->
+  <div class="section" id="s5">
+    <div class="section-header">
+      <div class="section-num">05</div>
+      <h2>Optimización para IA (AEO / GEO)</h2>
+    </div>
+    <p>Los motores de IA (ChatGPT, Perplexity, Google AI Overviews, Bing Copilot) son ya fuente de tráfico referido y de visibilidad de marca. Optimizar para ellos es compatible con y refuerza el SEO tradicional.</p>
+
+    <h3>Answer Engine Optimization (AEO)</h3>
+    <table class="req-table">
+      <thead><tr><th>Técnica</th><th>Implementación</th><th>Prioridad</th></tr></thead>
+      <tbody>
+        <tr><td>Respuesta directa al inicio</td><td>Primer párrafo responde la pregunta principal en 2-3 frases, sin preámbulo</td><td><span class="priority p1">P0</span></td></tr>
+        <tr><td>Schema Speakable</td><td>Marcar secciones óptimas para lectura por voz y extracción por IA</td><td><span class="priority p2">P1</span></td></tr>
+        <tr><td>Estructura pregunta-respuesta</td><td>H2/H3 formulados como preguntas naturales + respuesta inmediata bajo el heading</td><td><span class="priority p1">P0</span></td></tr>
+        <tr><td>Citations.txt / llms.txt</td><td>Archivo en raíz describiendo el dominio, editorial policy y fuentes para LLMs</td><td><span class="priority p2">P1</span></td></tr>
+        <tr><td>Autoridad verificable</td><td>Bylines con schema Person, credenciales de autor, About page detallado</td><td><span class="priority p1">P0</span></td></tr>
+        <tr><td>Datos estructurados ricos</td><td>ClaimReview para fact-check, StatisticalPopulation para datos, HowTo para tutoriales</td><td><span class="priority p2">P1</span></td></tr>
+        <tr><td>Crawlable por AI bots</td><td>robots.txt permisivo para GPTBot, Claude-Web, PerplexityBot (a menos de estrategia contraria)</td><td><span class="priority p2">P1</span></td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout callout-success">
+      <p><strong>Oportunidad:</strong> Los LLMs prefieren fuentes con contenido factual verificado, fechas explícitas y autoría acreditada. Un medio que cumple estos criterios tiene mayor probabilidad de ser citado en respuestas de IA, generando impresiones de marca sin clic directo.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SECCIÓN 6 -->
+  <div class="section" id="s6">
+    <div class="section-header">
+      <div class="section-num">06</div>
+      <h2>Optimización para redes sociales</h2>
+    </div>
+    <p>Las redes sociales amplifican el alcance de cada publicación y generan backlinks naturales. La optimización aquí es principalmente sobre metadatos correctos y velocidad de carga en previews.</p>
+
+    <h3>Metadatos por plataforma</h3>
+    <table class="req-table">
+      <thead><tr><th>Red</th><th>Tags requeridos</th><th>Imagen óptima</th></tr></thead>
+      <tbody>
+        <tr><td>X (Twitter)</td><td>twitter:card="summary_large_image", twitter:title, twitter:description, twitter:image</td><td>1200×628px</td></tr>
+        <tr><td>Facebook / Instagram</td><td>og:title, og:description, og:image, og:type="article", article:published_time, article:section</td><td>1200×630px + 1:1 para feed</td></tr>
+        <tr><td>LinkedIn</td><td>og:title, og:description, og:image (prioriza texto largo)</td><td>1200×627px</td></tr>
+        <tr><td>WhatsApp</td><td>og:title + og:description (máx 65 chars) + og:image pequeña</td><td>300×200px mínimo</td></tr>
+        <tr><td>Telegram</td><td>og:title + og:image (cualquier ratio)</td><td>800×418px</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Requisitos adicionales</h3>
+    <ul class="req-list">
+      <li>Generación automática de imagen OG a partir de plantilla con título + categoría + logo (sin dependencia manual)</li>
+      <li>Botones de compartir con Web Share API (sin trackers de terceros)</li>
+      <li>URL corta canónica para compartir (no parámetros UTM en URL canónica)</li>
+      <li>Validación de cards antes de publicar: Twitter Card Validator, Facebook Sharing Debugger</li>
+      <li>Velocidad de carga del preview: la red previsualiza cargando solo el HTML y la imagen OG — ambos deben ser rápidos desde edge</li>
+    </ul>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SECCIÓN 7 — DEBATE ESTRATÉGICO -->
+  <div class="section" id="s7">
+    <div class="section-header">
+      <div class="section-num">07</div>
+      <h2>Debate estratégico: una plataforma vs. múltiples</h2>
+    </div>
+    <p>Esta es la pregunta más relevante del documento. La respuesta influye directamente en la velocidad de carga final, el coste de mantenimiento y la sostenibilidad del proyecto a largo plazo.</p>
+
+    <div class="callout callout-danger">
+      <p><strong>Mito a desmentir:</strong> "Crear una versión diferente del sitio para cada motor de búsqueda" es una práctica obsoleta. El cloaking (mostrar contenido distinto a bots y usuarios) está penalizado explícitamente por Google, Bing y todos los motores principales. Conlleva penalización manual o algorítmica.</p>
+    </div>
+
+    <h3>Las tres opciones reales</h3>
+
+    <div class="verdict-card">
+      <div class="verdict-header">
+        <span class="verdict-icon"><i class="ti ti-circle-x" aria-hidden="true" style="color:var(--color-text-danger)"></i></span>
+        <div class="verdict-title">Opción A — Versión separada por motor (cloaking)</div>
+      </div>
+      <div class="verdict-body">Crear contenido o estructura diferente según el User-Agent del bot. Consecuencia: penalización garantizada. Impacto en velocidad: añade complejidad de routing, aumenta TTFB. Veredicto: descartada.</div>
+    </div>
+
+    <div class="verdict-card">
+      <div class="verdict-header">
+        <span class="verdict-icon"><i class="ti ti-minus" aria-hidden="true" style="color:var(--color-text-warning)"></i></span>
+        <div class="verdict-title">Opción B — Especialización en un único motor</div>
+      </div>
+      <div class="verdict-body">Concentrar señales de optimización solo para Google (90% del mercado hispanohablante). Ventaja: menor complejidad. Desventaja: riesgo de concentración, pérdida de tráfico de Bing AI/Copilot (crecimiento significativo en 2025-2026), y dependencia total de cambios algorítmicos de Google. Recomendable solo en recursos muy limitados.</div>
+    </div>
+
+    <div class="verdict-card verdict-rec">
+      <div class="verdict-header">
+        <span class="verdict-icon"><i class="ti ti-circle-check" aria-hidden="true"></i></span>
+        <div class="verdict-title">Opción C — Un solo sitio optimizado universalmente ✓ Recomendada</div>
+      </div>
+      <div class="verdict-body">Un único codebase que implementa correctamente los estándares abiertos (Schema.org, Open Graph, RSS, sitemaps, IndexNow). Las señales de calidad son universales: velocidad, accesibilidad, contenido de valor, autoridad. El 95% del trabajo es idéntico para todos los motores. El 5% restante son adaptaciones menores (Speakable para Bing/Cortana, Google News approval) que no requieren versiones separadas. Impacto en velocidad: neutro o positivo — un solo origen, un solo CDN, máximo rendimiento.</div>
+    </div>
+
+    <h3>Impacto real del multi-plataforma en la velocidad de carga</h3>
+    <table class="req-table">
+      <thead><tr><th>Enfoque</th><th>TTFB</th><th>LCP</th><th>Mantenimiento</th></tr></thead>
+      <tbody>
+        <tr><td>Sitio único bien optimizado</td><td>~40ms (edge)</td><td>~1.0s</td><td>Bajo</td></tr>
+        <tr><td>Versión por motor (3 variantes)</td><td>+15-40ms (routing)</td><td>~1.2-1.4s</td><td>3× mayor</td></tr>
+        <tr><td>Solo una plataforma</td><td>~40ms</td><td>~1.0s</td><td>Bajo (sin diversificación)</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout callout-info">
+      <p><strong>Conclusión del debate:</strong> No solo no es necesario crear versiones por motor — es contraproducente. Un sitio rápido, accesible, con contenido de calidad y schema correcto se posiciona bien en todos los motores simultáneamente. La diversificación de tráfico se consigue con un único codebase correctamente ejecutado, no con N versiones.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SECCIÓN 8 -->
+  <div class="section" id="s8">
+    <div class="section-header">
+      <div class="section-num">08</div>
+      <h2>Stack tecnológico recomendado</h2>
+    </div>
+
+    <div class="stack-row">
+      <div class="stack-icon"><i class="ti ti-brand-nextjs" aria-hidden="true"></i></div>
+      <div class="stack-text"><div class="stack-name">Next.js 15 (App Router) o Astro 4</div><div class="stack-desc">SSG/ISR nativo, RSC para zero-JS en artículos, image optimization integrada. Astro si se prioriza máximo rendimiento estático sin necesidad de reactivity.</div></div>
+    </div>
+    <div class="stack-row">
+      <div class="stack-icon"><i class="ti ti-cloud" aria-hidden="true"></i></div>
+      <div class="stack-text"><div class="stack-name">Cloudflare Pages + Workers o Vercel Edge</div><div class="stack-desc">CDN global con edge locations en +200 ciudades. TTFB &lt; 50ms garantizado. Cache inteligente y revalidación ISR en el edge.</div></div>
+    </div>
+    <div class="stack-row">
+      <div class="stack-icon"><i class="ti ti-edit" aria-hidden="true"></i></div>
+      <div class="stack-text"><div class="stack-name">CMS Headless (Sanity, Payload, o Contentful)</div><div class="stack-desc">Webhooks en publicación para trigger de IndexNow + revalidación ISR. Previsualización de OG images. API de contenido para RSS y feeds automáticos.</div></div>
+    </div>
+    <div class="stack-row">
+      <div class="stack-icon"><i class="ti ti-photo" aria-hidden="true"></i></div>
+      <div class="stack-text"><div class="stack-name">Cloudinary o imgix</div><div class="stack-desc">Transformación y optimización de imágenes en CDN. Generación automática de OG images a partir de plantillas. AVIF/WebP on-the-fly.</div></div>
+    </div>
+    <div class="stack-row">
+      <div class="stack-icon"><i class="ti ti-chart-dots" aria-hidden="true"></i></div>
+      <div class="stack-text"><div class="stack-name">Plausible Analytics + GA4</div><div class="stack-desc">Analytics privacy-first sin cookie banner para UE (Plausible). GA4 para datos de conversión y Search Console integration. Sin impacto en CWV.</div></div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SECCIÓN 9 -->
+  <div class="section" id="s9">
+    <div class="section-header">
+      <div class="section-num">09</div>
+      <h2>Hoja de ruta</h2>
+    </div>
+
+    <div class="timeline">
+      <div class="phase">
+        <div class="phase-line"><div class="phase-dot"></div><div class="phase-connector"></div></div>
+        <div class="phase-content">
+          <div class="phase-tag">Semanas 1-2 · Fundamentos</div>
+          <div class="phase-title">Rendimiento e infraestructura</div>
+          <div class="phase-items">Setup SSG/ISR, CDN edge, critical CSS inline, Core Web Vitals baseline. Meta tags y Open Graph completos. HTTPS + HSTS.</div>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-line"><div class="phase-dot"></div><div class="phase-connector"></div></div>
+        <div class="phase-content">
+          <div class="phase-tag">Semanas 3-4 · Indexación</div>
+          <div class="phase-title">Herramientas y schema</div>
+          <div class="phase-items">Google Search Console + News. Bing Webmaster. IndexNow webhook. Schema markup completo (NewsArticle, FAQ, BreadcrumbList). Sitemaps automáticos.</div>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-line"><div class="phase-dot"></div><div class="phase-connector"></div></div>
+        <div class="phase-content">
+          <div class="phase-tag">Semanas 5-6 · Contenido</div>
+          <div class="phase-title">Arquitectura editorial y AEO</div>
+          <div class="phase-items">Templates evergreen, estructura FAQ, resúmenes ejecutivos, llms.txt, bylines con Person schema. Política de actualización de contenido.</div>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-line"><div class="phase-dot"></div><div class="phase-connector"></div></div>
+        <div class="phase-content">
+          <div class="phase-tag">Semanas 7-8 · Social</div>
+          <div class="phase-title">Distribución multiplataforma</div>
+          <div class="phase-items">OG images automáticas, Twitter Cards, RSS feeds por categoría, Media RSS para Apple News/Flipboard. Web Share API sin trackers.</div>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-line"><div class="phase-dot"></div></div>
+        <div class="phase-content">
+          <div class="phase-tag">Ongoing · Optimización continua</div>
+          <div class="phase-title">Monitorización y mejora iterativa</div>
+          <div class="phase-items">Alertas CWV en producción, auditorías mensuales de schema, revisión evergreen trimestral, A/B testing de formatos de contenido.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footnote">
+    PRD v1.0 — Mayo 2026. Propietario del producto. Las métricas objetivo están basadas en percentiles P75 de CrUX (Chrome User Experience Report) y estándares de Google Search Central. Revisar ante cambios de algoritmo mayores.
+  </div>
+
+</div>

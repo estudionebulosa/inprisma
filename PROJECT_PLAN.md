@@ -1,0 +1,242 @@
+# Template Placeholder System — Project Plan & Roadmap
+
+> Consolidated plan derived from `readme.md` (content/distribution layer) and
+> `prd_news_site_optimization.html` (technical optimization layer).
+> Status: Approved for build · Owner: Site Administrator · Last updated: 2026-10-01
+
+---
+
+## 1. Overview
+
+A **template placeholder system** that turns a single, validated content source into
+platform-ready articles for **Medium, LinkedIn and Substack**, while encoding the
+technical and editorial rules defined in the news-site PRD (SEO, AEO/GEO, E-E-A-T,
+social sharing, Core Web Vitals).
+
+The **self-hosted site is canonical**. Medium, LinkedIn and Substack receive
+syndicated copies that carry a canonical/attribution block pointing home.
+
+The central bet: **the field contract is defined once and shared** by the manual
+editor (Phase 1) and the automated pipeline (Phase 2), so automation and human
+editing produce the *same artifact* rather than diverging.
+
+---
+
+## 2. Goals & non-goals
+
+### Goals
+- One validated data model → Medium / LinkedIn / Substack outputs.
+- Automate the highest-error repetitive work: JSON-LD, meta tags, social tags, dates, slugs, revision.
+- Encode PRD rules as **hard CI gates**, not style guidance.
+- Make the field contract the shared interface between human editing and automation.
+- Keep Git as the source of truth; outputs remain plain Markdown/HTML.
+
+### Non-goals (for now)
+- Building a custom WYSIWYG application (Phase 1 uses a schema-generated CMS form).
+- Measuring CTR/CWV inside the authoring UI (measured in CI instead).
+- Cloaking or per-search-engine versions — explicitly rejected by PRD §07, Option C.
+
+---
+
+## 3. Decisions locked
+
+| Decision | Choice | Rationale |
+|---|---|---|
+| Source of truth | Markdown + front matter in Git; self-hosted site canonical | One auditable source; syndicated copies link home |
+| Build | Eleventy 3.x (ESM), Node LTS | Data cascade = native placeholder system; zero client JS in article output |
+| Field contract | `_data/placeholders.json` (human source) → generate JSON Schema | Single source of truth drives form, autocomplete and CI |
+| Validation | Ajv + generated schema in CI; build fails closed | Turns PRD content rules into enforceable gates |
+| Placeholder editor | Sveltia CMS, Decap-compatible `config.yml` (Decap fallback) | Form generated from same config; native draft→review→publish workflow |
+| Markdown editor | CMS body field | Edits body only; no byte-fighting with other editors |
+| HTML editor | `_includes/` layouts/partials, in-repo, dev-reviewed | Structural layer stays code-reviewed |
+| `admin.json` shape | Namespaced: `site`, `author`, `org` | JSON-LD partials consume these directly |
+| Host | Cloudflare Pages (PRD §08) + CMS OAuth worker; Netlify fallback | Edge TTFB target; fallback for auth edge cases |
+| Metrics | Templates encode best practices; Lighthouse/CWV measured in CI | Avoids scope creep; still enforces PRD §01 |
+| Delimiters | Nunjucks `{{ }}` / `{% %}`; `{% raw %}` for literal braces | Follows the chosen Eleventy convention |
+
+---
+
+## 4. Architecture
+
+### 4.1 Repository layout
+
+```
+_data/placeholders.json            # schema: key, scope, type, required, validation, auto, variationAllowed, platforms
+_data/admin.json                   # site / author / org  (namespaced)
+content/articles/<slug>.md         # body + front matter (per-article data)
+content/articles/articles.11tydata.json   # defaults + eleventyComputed (slug, canonical, readingTime, revision, JSON-LD)
+_includes/layouts/{medium,linkedin,substack}.njk
+_includes/partials/{meta,jsonld,social}.njk
+config/cms.config.yml              # GENERATED from placeholders.json
+schema/placeholders.schema.json    # GENERATED from placeholders.json
+scripts/                           # generate-schema, generate-cms-config, validate, build-jsonld
+docs/                              # 00-overview … 06-prd-mapping
+.github/workflows/ci.yml
+```
+
+### 4.2 Two layers
+
+| Layer | Applies to | Carries | PRD section |
+|---|---|---|---|
+| **Technical** (JSON-LD, meta, OG/Twitter, sitemap, IndexNow, CWV) | self-hosted site only | rendering + indexing | §01, §03, §04, §06 |
+| **Content** (summary block, Q&A headings, FAQ, E-E-A-T byline, hooks, CTAs, share copy) | all four destinations | editorial structure | §02, §05 |
+
+### 4.3 Placeholder namespaces
+
+- `site.*` — site name, website, socials
+- `author.*` — name, title, bio, credentials, sameAs
+- `org.*` — organization name, logo, sameAs
+- `article.*` — title, dek, tags, category, excerpt, hero, faq, sources, keywords
+- `computed.*` — slug, canonicalUrl, publishedISO, modifiedISO, revision, readingTime, wordCount, ogImagePath, jsonld
+
+---
+
+## 5. Placeholder taxonomy
+
+### 5.1 Automation matrix
+
+| Class | Examples | Source | Auto? |
+|---|---|---|---|
+| Fully automated | slug, canonicalUrl, publishedISO, modifiedISO, revision, readingTime, wordCount, ogImagePath, sitemapLastmod, **all JSON-LD** | computed from other fields | Yes |
+| Repetitive / site-global | site.name, site.website, site.social.*, org.*, author.defaultBio, author.credentials | `_data/admin.json` (set once) | Yes |
+| Repetitive / per-article | title, dek, tags[], author, revision, date, updated, category, excerpt, heroImage+alt, faq[], sources[], keywords[] | front matter | Input, then validated |
+| Minor variation allowed | hook/intro, cta, shareCopy, LinkedIn framing, Substack subject/preview, Medium kicker | human, platform-tuned | Manual |
+
+### 5.2 Structural vs. variable
+
+- **Structural** — block slots defined by the layout and controlled by config:
+  `{{> meta }}`, `{{> jsonld }}`, `{{> social }}`, FAQ/sources loops. Not free text.
+- **Variable** — injected scalars from the data cascade:
+  `{{ site.name }}`, `{{ article.tags }}`, `{{ computed.readingTime }}`.
+
+### 5.3 Field contract shape
+
+Every entry in `_data/placeholders.json`:
+
+```json
+{
+  "key": "article.title",
+  "scope": "article",
+  "type": "string",
+  "required": true,
+  "validation": { "maxLength": 60 },
+  "auto": false,
+  "variationAllowed": false,
+  "platforms": ["medium", "linkedin", "substack"]
+}
+```
+
+---
+
+## 6. Production gates (CI — fail closed)
+
+| # | Gate | Criterion | PRD ref |
+|---|---|---|---|
+| 1 | Schema validation | Every article passes Ajv against generated schema | — |
+| 2 | Content rules | title ≤ 60; description 120–160; ≥1 hero alt; FAQ/sources where required; 3–5 internal links | §02 |
+| 3 | JSON-LD | Parses; required `@type` fields present; Person/Organization wired | §03, §05 |
+| 4 | Lighthouse CI | LCP < 1.2s; CLS 0; critical HTML < 10kb | §01 |
+| 5 | Accessibility | axe/pa11y, WCAG 2.1 AA | §03 |
+| 6 | Link checker | Internal + external links resolve | §02 |
+| 7 | Snapshot tests | Rendered partials stable across the three layouts | — |
+
+---
+
+## 7. Roadmap
+
+### Phase P0 — Contract (plain files, no runtime app)
+**Goal:** define and prove the shared field contract.
+
+**Tasks**
+- [ ] `_data/placeholders.json` — complete field schema.
+- [ ] `_data/admin.json` — namespaced `site` / `author` / `org`.
+- [ ] `content/articles/_example.md` — reference article with full front matter.
+- [ ] `articles.11tydata.json` — defaults + `eleventyComputed` (slug, canonical, readingTime, revision, JSON-LD assembly).
+- [ ] Layouts: `medium.njk`, `linkedin.njk`, `substack.njk`.
+- [ ] Partials: `meta.njk`, `jsonld.njk`, `social.njk`.
+- [ ] Generators: `scripts/generate-schema.js`, `scripts/generate-cms-config.js`.
+- [ ] Validator: `scripts/validate.js` (Ajv).
+- [ ] `docs/00-overview … 06-prd-mapping`.
+- [ ] `.github/workflows/ci.yml` — gates 1–3, 6, 7.
+
+**Acceptance:** one example article renders cleanly through all three layouts; validator green; JSON-LD parses.
+
+**Estimate:** ~1–1.5 weeks.
+
+---
+
+### Phase P1 — Human-supervised editor
+**Goal:** non-developers edit articles and publish via a generated form.
+
+**Tasks**
+- [ ] CMS `config.yml` generated from `placeholders.json`.
+- [ ] Sveltia CMS wired to the repo; Decap fallback documented.
+- [ ] Editorial workflow: draft → in review → published.
+- [ ] Publish-time hook runs the full CI gate set (gates 1–7).
+- [ ] Author onboarding doc.
+
+**Acceptance:** a non-developer edits and publishes an article through the form without touching files; all gates pass; syndicated copies carry canonical block.
+
+**Estimate:** ~1 week.
+
+---
+
+### Phase P2 — Automated filler
+**Goal:** automation produces the same front matter, escalating exceptions.
+
+**Tasks**
+- [ ] Filler service reads `placeholders.json` and emits front matter.
+- [ ] Per-field autonomy keyed on `auto: true` + confidence threshold.
+- [ ] Low-confidence fields queued to the P1 form for review.
+- [ ] Observability: fill rate, error rate, escalation rate.
+- [ ] PRD integrations: IndexNow webhook, sitemap ping, `lastmod` (PRD §04).
+- [ ] Automation runbook + rollback.
+
+**Acceptance:** ≥ target % fields auto-filled at threshold; remainder queued; staging run matches human output byte-for-byte on shared fields.
+
+**Estimate:** ~2–3 weeks.
+
+---
+
+### Phase P3 — Continuous optimization (ongoing)
+- [ ] CWV/Lighthouse alerting in production (PRD P0).
+- [ ] Monthly schema audit; quarterly evergreen review (PRD §02).
+- [ ] A/B testing of hooks/CTAs.
+- [ ] Upgrade path note: if editorial volume outgrows Git-based CMS, migrate to Payload/Sanity while keeping the same field contract.
+
+---
+
+## 8. Risks & mitigations
+
+| Risk | Impact | Mitigation |
+|---|---|---|
+| One template, three platforms | Underperformance | Shared data model, per-platform layout partials |
+| Markdown round-tripping | Corrupted bodies | Three editors over three surfaces; Markdown is canonical |
+| Delimiter collisions | Broken output | Nunjucks `{% raw %}`; validator flags unresolved tokens |
+| Metrics scope creep | Blown timeline | Templates encode; CI measures |
+| CMS lock-in | Migration cost | Decap-compatible `config.yml`; contract is portable |
+| Two systems, one repo | Blurred scope | Technical vs. content layers separated in docs and folders |
+
+---
+
+## 9. PRD mapping
+
+| PRD section | Where it lands |
+|---|---|
+| §01 Core Web Vitals | CI gate 4; lean layouts |
+| §02 Content architecture | Front-matter rules; FAQ/sources/excerpt fields; CI gate 2 |
+| §03 Multi-engine SEO | JSON-LD/meta partials; CI gates 3, 5 |
+| §04 Indexing tools | Phase P2 webhooks; `lastmod` |
+| §05 AEO/GEO | Answer-first structure, Speakable, `llms.txt`, bylines |
+| §06 Social | `social.njk`; generated OG images |
+| §07 One platform vs. many | Outputs are content copies; self-hosted stays canonical |
+| §08 Stack | Eleventy + Cloudflare Pages + Git CMS + Cloudinary + Plausible |
+| §09 Roadmap | Phases P0–P3 above |
+
+---
+
+## 10. Open items
+
+1. Confirm target auto-fill % and confidence threshold for Phase P2.
+2. Confirm OG-image generation provider (Cloudinary per PRD §08 recommended).
+3. Confirm `llms.txt` / `citations.txt` policy (PRD §05 permits AI crawlers by default).
