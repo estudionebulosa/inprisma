@@ -71,10 +71,11 @@ content/articles/articles.11tydata.js     # defaults + eleventyComputed (slug, c
 _includes/layouts/article.njk      # canonical web page (technical layer + content)
 _includes/layouts/{medium,linkedin,substack}.njk   # syndication (content layer only)
 _includes/partials/{meta,jsonld,social,byline,faq,sources,canonical-notice}.njk
-config/cms.config.yml              # GENERATED from placeholders.json
-schema/placeholders.schema.json    # GENERATED from placeholders.json
-scripts/                           # generate-schema, generate-cms-config, validate, build-jsonld
-docs/                              # 00-overview … 06-prd-mapping
+admin/index.html                    # CMS shell (Sveltia CMS, committed)
+admin/config.yml                    # GENERATED from placeholders.json (Sveltia/Decap)
+schema/placeholders.schema.json     # GENERATED from placeholders.json
+scripts/                           # generate-schema, generate-cms-config, validate, link-check, serve-site, check-html-size, verify-jsonld
+docs/                              # 00-brief … 07-cms
 .github/workflows/ci.yml
 ```
 
@@ -183,13 +184,14 @@ Every entry in `_data/placeholders.json`:
 **Goal:** non-developers edit articles and publish via a generated form.
 
 **Tasks**
-- [ ] CMS `config.yml` generated from `placeholders.json`.
-- [ ] Sveltia CMS wired to the repo; Decap fallback documented.
-- [ ] Editorial workflow: draft → in review → published.
-- [ ] Publish-time hook runs the full CI gate set (gates 1–7).
-- [ ] Author onboarding doc.
+- [x] CMS `config.yml` generated from `placeholders.json`.
+- [x] Sveltia CMS wired to the repo; Decap fallback documented.
+- [x] Editorial workflow: draft → in review → published.
+- [x] Publish-time hook runs the CI gate set (gates 1–6; gate 7 pending).
+- [x] Author onboarding doc.
 
 **Acceptance:** a non-developer edits and publishes an article through the form without touching files; all gates pass; syndicated copies carry canonical block.
+**Status:** CMS shell + generated config wired (`admin/index.html`, `admin/config.yml`); editorial workflow + GitHub backend; local workflow works without OAuth. Production OAuth (Sveltia CMS Authenticator on Cloudflare Workers) documented, deployment-specific.
 
 **Estimate:** ~1 week.
 

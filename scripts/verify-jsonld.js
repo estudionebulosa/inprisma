@@ -65,9 +65,12 @@ function extractBlocks(html) {
 
 const pages = walk(SITE_DIR).filter(
   (p) =>
-    // Canonical article pages only: skip syndication copies and static
-    // passthrough files (e.g. the PRD HTML) that never carry JSON-LD.
-    !p.includes("/syndication/") && !p.endsWith("prd_news_site_optimization.html"),
+    // Canonical content pages only: skip syndication copies, the CMS admin
+    // shell, and static passthrough files (e.g. the PRD HTML) that never carry
+    // JSON-LD.
+    !p.includes("/syndication/") &&
+    !p.includes("/admin/") &&
+    !p.endsWith("prd_news_site_optimization.html"),
 );
 const problems = [];
 

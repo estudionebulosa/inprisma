@@ -56,6 +56,7 @@ export default function (eleventyConfig) {
   /* -------------------------------------------------------------- */
 
   eleventyConfig.addPassthroughCopy({ assets: "assets" });
+  eleventyConfig.addPassthroughCopy({ "admin": "admin" });
   eleventyConfig.addPassthroughCopy({ "prd_news_site_optimization.html": "prd_news_site_optimization.html" });
 
   /* -------------------------------------------------------------- */
